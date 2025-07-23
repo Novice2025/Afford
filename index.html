@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dominando "Afford" - Para Brasileiros</title>
+    <!-- Font Awesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Estilos Globais e Tema Netflix */
+        :root {
+            --netflix-red: #E50914;
+            --netflix-dark: #141414;
+            --netflix-light-dark: #222222;
+            --text-color: #E5E5E5;
+            --accent-gray: #A0A0A0;
+            --border-radius: 8px;
+            --padding-base: 1.5rem;
+        }
+
+        body {
+            font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--netflix-dark);
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background: linear-gradient(to bottom, var(--netflix-dark) 0%, var(--netflix-light-dark) 100%);
+        }
+
+        /* Cabeçalho */
+        .header {
+            background-color: var(--netflix-dark);
+            padding: 1.5rem var(--padding-base);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            border-bottom: 2px solid var(--netflix-red);
+        }
+
+        .header-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--netflix-red);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+            margin: 0;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-title i {
+            font-size: 0.8em;
+            color: var(--text-color);
+        }
+
+        /* Conteúdo Principal */
+        .main-content {
+            flex-grow: 1;
+            max-width: 900px;
+            margin: 2rem auto;
+            background-color: var(--netflix-light-dark);
+            border-radius: var(--border-radius);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7);
+            padding: var(--padding-base) 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: var(--netflix-red);
+            text-align: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .section-text {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            text-align: justify;
+        }
+
+        /* Acordeão (Dropdown List) */
+        .accordion-item {
+            background-color: var(--netflix-dark);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--border-radius);
+            margin-bottom: 10px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .accordion-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem var(--padding-base);
+            background-color: var(--netflix-light-dark);
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-color);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: background-color 0.3s ease;
+        }
+
+        .accordion-header:hover {
+            background-color: #333333;
+        }
+
+        .accordion-header i {
+            transition: transform 0.3s ease;
+        }
+
+        .accordion-header.active i {
+            transform: rotate(180deg);
+        }
+
+        .accordion-content {
+            padding: 0 var(--padding-base);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out, padding 0.5s ease-out;
+            background-color: var(--netflix-dark);
+        }
+
+        .accordion-content.active {
+            max-height: 500px; /* Ajuste conforme necessário para o conteúdo */
+            padding: var(--padding-base) var(--padding-base);
+        }
+
+        .accordion-content p {
+            margin-bottom: 1em;
+        }
+
+        .accordion-content ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .accordion-content li {
+            margin-bottom: 0.5em;
+            padding-left: 1.5em;
+            position: relative;
+        }
+
+        .accordion-content li::before {
+            content: '•';
+            color: var(--netflix-red);
+            position: absolute;
+            left: 0;
+        }
+
+        /* Botões de Áudio (mantidos para consistência, mas não usados para "Looking Forward") */
+        .audio-player {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background-color: #2a2a2a;
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            justify-content: center;
+        }
+
+        .audio-button {
+            background-color: var(--netflix-red);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: var(--border-radius);
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+
+        .audio-button:hover {
+            background-color: #CC0812;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .audio-button i {
+            font-size: 1.2em;
+        }
+
+        /* Rodapé */
+        .footer {
+            text-align: center;
+            padding: 1.5rem var(--padding-base);
+            background-color: var(--netflix-dark);
+            color: var(--accent-gray);
+            font-size: 0.9rem;
+            margin-top: auto;
+            border-top: 2px solid var(--netflix-red);
+            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .header-title {
+                font-size: 1.8rem;
+                text-align: center;
+                display: block;
+            }
+            .header-title i {
+                display: block;
+                margin-bottom: 5px;
+            }
+            .main-content {
+                margin: 1rem;
+                padding: 1rem;
+            }
+            .section-title {
+                font-size: 1.8rem;
+            }
+            .section-text {
+                font-size: 1rem;
+            }
+            .accordion-header {
+                font-size: 1rem;
+                padding: 0.8rem 1rem;
+            }
+            .accordion-content {
+                padding: 0.8rem 1rem;
+            }
+            .audio-player {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .audio-button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* Language buttons for introduction */
+        .intro-language-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 1.5rem;
+        }
+
+        .intro-lang-button {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            background-color: #444;
+            color: var(--text-color);
+        }
+
+        .intro-lang-button.active {
+            background-color: var(--netflix-red);
+            color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+            transform: translateY(-2px);
+        }
+
+        .intro-lang-button:hover:not(.active) {
+            background-color: #555;
+            transform: translateY(-1px);
+        }
+
+        .intro-text-content {
+            transition: opacity 0.5s ease-in-out;
+        }
+        .intro-text-content.hidden {
+            opacity: 0;
+            height: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        /* Styling for (Português/English) format */
+        .lang-pair {
+            display: block; /* Ensures each pair is on a new line */
+            margin-bottom: 0.5em; /* Space between pairs */
+            font-size: 0.95em; /* Slightly smaller font for examples */
+        }
+        .lang-pair strong {
+            color: var(--netflix-red); /* Highlight the expression */
+        }
+        .lang-pair em {
+            font-style: normal; /* Remove italic from original <em> */
+            color: var(--accent-gray); /* Distinguish translation */
+        }
+
+        /* Call to Action Box */
+        .call-to-action-box {
+            background-color: var(--netflix-red);
+            color: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+            margin-top: 3rem;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .call-to-action-box h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+        }
+
+        .call-to-action-box p {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .call-to-action-button {
+            background-color: white;
+            color: var(--netflix-red);
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .call-to-action-button:hover {
+            background-color: #f0f0f0;
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Translation Practice Section */
+        .translation-exercise {
+            background-color: #2a2a2a;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--border-radius);
+            margin-top: 15px; /* Added margin-top for spacing */
+            margin-bottom: 15px;
+            padding: 1.5rem;
+        }
+
+        .translation-exercise p {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+
+        .translation-exercise input[type="text"] {
+            width: calc(100% - 20px);
+            padding: 0.8rem 10px;
+            margin-bottom: 1rem;
+            border: 1px solid #555;
+            border-radius: 5px;
+            background-color: #333;
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+
+        .translation-exercise input[type="text"]:focus {
+            outline: none;
+            border-color: var(--netflix-red);
+            box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.5);
+        }
+
+        .translation-exercise .show-answer-btn {
+            background-color: #007bff; /* A nice blue for action */
+            color: white;
+            border: none;
+            padding: 0.7rem 1.2rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .translation-exercise .show-answer-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .translation-exercise .correct-translation {
+            margin-top: 1rem;
+            padding: 0.8rem;
+            background-color: #3a3a3a;
+            border: 1px solid #555;
+            border-radius: 5px;
+            color: #76FF03; /* Green for correct answer */
+            font-weight: bold;
+            display: none; /* Hidden by default */
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1 class="header-title"><i class="fas fa-dollar-sign"></i> Afford: Um Guia para Brasileiros (A Guide for Brazilians)</h1>
+    </header>
+
+    <main class="main-content">
+        <section id="introduction">
+            <h2 class="section-title">Entendendo "Afford": Capacidade Financeira e Possibilidade (Understanding "Afford": Financial Capacity and Possibility)</h2>
+
+            <div class="intro-language-buttons">
+                <button id="intro-lang-pt-btn" class="intro-lang-button active">Português</button>
+                <button id="intro-lang-en-btn" class="intro-lang-button">English</button>
+            </div>
+
+            <div id="intro-pt" class="intro-text-content">
+                <p class="section-text">A palavra "afford" no inglês é essencial para expressar a capacidade, principalmente financeira, de lidar com o custo ou o esforço de algo. (The word "afford" in English is essential for expressing the capacity, primarily financial, to handle the cost or effort of something.) Ela vai além de simplesmente "ter dinheiro", implicando que você pode arcar com algo sem comprometer sua estabilidade ou recursos. (It goes beyond simply "having money," implying that you can bear something without compromising your stability or resources.)</p>
+                <p class="section-text">Compreender "afford" permite que você comunique com precisão a viabilidade de investimentos, despesas ou até mesmo a capacidade de dedicar tempo e recursos a um projeto. (Understanding "afford" allows you to accurately communicate the feasibility of investments, expenses, or even the ability to dedicate time and resources to a project.)</p>
+                <p class="section-text">Vamos explorar o significado e os usos de "afford" para que você possa empregá-la com confiança e clareza em sua comunicação. (Let's explore the meaning and uses of "afford" so you can employ it with confidence and clarity in your communication.)</p>
+            </div>
+
+            <div id="intro-en" class="intro-text-content hidden">
+                <p class="section-text">The word "afford" in English is essential for expressing the capacity, primarily financial, to handle the cost or effort of something. It goes beyond simply "having money," implying that you can bear something without compromising your stability or resources.</p>
+                <p class="section-text">Understanding "afford" allows you to accurately communicate the feasibility of investments, expenses, or even the ability to dedicate time and resources to a project.</p>
+                <p class="section-text">Let's explore the meaning and uses of "afford" so you can employ it with confidence and clarity in your communication.</p>
+            </div>
+        </section>
+
+        <section id="afford-section">
+            <h2 class="section-title">Afford: Capacidade de Pagar/Proporcionar (Afford: Ability to Pay/Provide)</h2>
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    Significado e Uso (Meaning and Usage) <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="accordion-content">
+                    <p>Como verbo, **afford** significa **ter condições financeiras para pagar algo, poder arcar com o custo de algo, ou proporcionar algo (como uma oportunidade ou benefício)**. (As a verb, **afford** means **to have the financial means to pay for something, to be able to bear the cost of something, or to provide something (such as an opportunity or benefit)**.) É frequentemente usado com os modais "can" ou "cannot". (It is often used with the modals "can" or "cannot".)</p>
+                    <ul>
+                        <li><span class="lang-pair">"We cannot **afford** to lose this client." <br> <em>(Não podemos nos **dar ao luxo** de perder este cliente.)</em></span></li>
+                        <li><span class="lang-pair">"The company can **afford** to invest in new technology." <br> <em>(A empresa pode **arcar** com o investimento em nova tecnologia.)</em></span></span></li>
+                        <li><span class="lang-pair">"Can we **afford** to hire more staff right now?" <br> <em>(Podemos **ter condições** de contratar mais funcionários agora?)</em></span></li>
+                        <li><span class="lang-pair">"This new system will **afford** us greater efficiency." <br> <em>(Este novo sistema nos **proporcionará** maior eficiência.)</em></span></li>
+                        <li><span class="lang-pair">"They could not **afford** the high cost of living in the city center." <br> <em>(Eles não podiam **arcar** com o alto custo de vida no centro da cidade.)</em></span></li>
+                    </ul>
+                    <p><strong>Substitua: "Ter dinheiro para", "Conseguir pagar", "Dar conta de"</strong> (Replace: "To have money for", "To be able to pay", "To handle")<br>
+                    "Afford" é mais do que apenas ter o dinheiro; ele implica a capacidade de arcar com algo sem dificuldades, mantendo a estabilidade financeira ou de recursos. ( "Afford" is more than just having the money; it implies the ability to bear something without difficulty, maintaining financial or resource stability.)</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="walkthrough-expressions">
+            <h2 class="section-title">Walkthrough: Entendendo "Afford" (Walkthrough: Understanding "Afford")</h2>
+
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    Afford: Why, How, and When to Use <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="accordion-content">
+                    <h3>Why use "Afford"?</h3>
+                    <p>Using "afford" allows for precise communication regarding financial capability, resource allocation, and the feasibility of actions or purchases. It conveys whether something is within one's means without causing undue strain. In a professional context, it's crucial for discussions about budgets, investments, and operational capacity, indicating a thoughtful assessment of resources.</p>
+                    <h3>How to use "Afford"?</h3>
+                    <ul>
+                        <li><strong>As a verb:</strong> "Afford" is always a verb. It is most commonly used with modal verbs like "can" or "cannot" (or "could" / "could not"). For example: "We can afford to upgrade our software." (Podemos nos dar ao luxo de atualizar nosso software.)</li>
+                        <li>It can also be used to mean "to provide" or "to grant," as in: "The new policy will afford employees more flexibility." (A nova política proporcionará aos funcionários mais flexibilidade.)</li>
+                    </ul>
+                    <h3>When to use "Afford"?</h3>
+                    <ul>
+                        <li>When discussing budgets, expenses, and financial planning in business meetings.</li>
+                        <li>To evaluate the feasibility of new projects, hiring, or investments.</li>
+                        <li>When talking about the capacity to absorb costs or risks without negative impact.</li>
+                        <li>In personal finance discussions, such as buying a home or a car.</li>
+                        <li>When describing what a situation or opportunity can provide.</li>
+                    </ul>
+
+                    <h3>Difference between "Afford" and "Can Buy / Have Enough Money"</h3>
+                    <p>While "can buy" or "have enough money" focus simply on the immediate availability of funds for a transaction, "afford" implies a deeper assessment of financial capacity and sustainability. "Can buy" means you have the cash at hand. "Afford" means you can make the purchase or bear the cost without jeopardizing your overall financial well-being or other commitments.</p>
+                    <p>For example, you might "have enough money" to buy a very expensive car, but you might not "afford" it if doing so would deplete your savings, prevent you from paying bills, or lead to long-term financial instability. "Afford" considers the broader financial picture and the long-term implications of a cost or commitment.</p>
+                    <ul>
+                        <li><strong>Can Buy / Have Enough Money:</strong> Focuses on immediate funds for a transaction. (Ex: "I have enough money to buy this coffee.")</li>
+                        <li><strong>Afford:</strong> Implies financial capacity and sustainability, considering the broader impact on resources. (Ex: "I can afford this coffee without affecting my budget.")</li>
+                    </ul>
+
+                    <div class="translation-exercise">
+                        <p>1. Não podemos nos dar ao luxo de cometer outro erro. (We cannot afford to make another mistake.)</p>
+                        <input type="text" placeholder="Sua tradução aqui... (Your translation here...)">
+                        <button class="show-answer-btn">Mostrar Resposta (Show Answer)</button>
+                        <div class="correct-translation">
+                            Resposta Correta: "We cannot afford to make another mistake."
+                        </div>
+                    </div>
+                    <div class="translation-exercise">
+                        <p>2. A empresa pode arcar com os custos de expansão. (The company can afford the expansion costs.)</p>
+                        <input type="text" placeholder="Sua tradução aqui... (Your translation here...)">
+                        <button class="show-answer-btn">Mostrar Resposta (Show Answer)</button>
+                        <div class="correct-translation">
+                            Resposta Correta: "The company can afford the expansion costs."
+                        </div>
+                    </div>
+                    <div class="translation-exercise">
+                        <p>3. Ele não podia arcar com as despesas médicas. (He could not afford the medical expenses.)</p>
+                        <input type="text" placeholder="Sua tradução aqui... (Your translation here...)">
+                        <button class="show-answer-btn">Mostrar Resposta (Show Answer)</button>
+                        <div class="correct-translation">
+                            Resposta Correta: "He could not afford the medical expenses."
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="additional-translation-practice">
+            <h2 class="section-title">Prática de Tradução Adicional (Additional Translation Practice)</h2>
+            <p class="section-text" style="text-align: center;">Traduza as frases abaixo para o inglês. Use o botão para ver a resposta sugerida pela IA.</p>
+
+            <div class="translation-exercise">
+                <p>1. Não podemos nos permitir atrasos neste projeto. (We cannot afford delays on this project.)</p>
+                <input type="text" placeholder="Sua tradução aqui...">
+                <button class="show-answer-btn">Mostrar Resposta (Show AI Answer)</button>
+                <div class="correct-translation">
+                    Resposta Correta: "We cannot afford delays on this project."
+                </div>
+            </div>
+
+            <div class="translation-exercise">
+                <p>2. A nova política de benefícios proporcionará aos funcionários mais segurança. (The new benefits policy will afford employees more security.)</p>
+                <input type="text" placeholder="Sua tradução aqui...">
+                <button class="show-answer-btn">Mostrar Resposta (Show AI Answer)</button>
+                <div class="correct-translation">
+                    Resposta Correta: "The new benefits policy will afford employees more security."
+                </div>
+            </div>
+
+            <div class="translation-exercise">
+                <p>3. Eles podem arcar com o custo de uma campanha de marketing maior. (They can afford the cost of a larger marketing campaign.)</p>
+                <input type="text" placeholder="Sua tradução aqui...">
+                <button class="show-answer-btn">Mostrar Resposta (Show AI Answer)</button>
+                <div class="correct-translation">
+                    Resposta Correta: "They can afford the cost of a larger marketing campaign."
+                </div>
+            </div>
+
+            <div class="translation-exercise">
+                <p>4. O orçamento atual não nos permite contratar mais pessoas. (The current budget does not afford us to hire more people.)</p>
+                <input type="text" placeholder="Sua tradução aqui...">
+                <button class="show-answer-btn">Mostrar Resposta (Show AI Answer)</button>
+                <div class="correct-translation">
+                    Resposta Correta: "The current budget does not afford us to hire more people."
+                </div>
+            </div>
+        </section>
+
+        <section id="conclusion">
+            <h2 class="section-title">Conclusão (Conclusion)</h2>
+            <p class="section-text">Dominar o uso de "afford" permite que você comunique a capacidade financeira e a viabilidade de ações com precisão em inglês. (Mastering the use of "afford" allows you to communicate financial capacity and the feasibility of actions with precision in English.) É uma palavra crucial para discussões sobre orçamentos, investimentos e oportunidades. (It is a crucial word for discussions about budgets, investments, and opportunities.)</p>
+            <p class="section-text">Continue praticando para incorporar "afford" ao seu vocabulário e expressar-se com mais clareza e profissionalismo! (Keep practicing to incorporate "afford" into your vocabulary and express yourself with more clarity and professionalism!)</p>
+        </section>
+
+        <section id="call-to-action">
+            <div class="call-to-action-box">
+                <h3>Aprimore Seu Inglês: Entenda e Use "Afford"! (Improve Your English: Understand and Use "Afford"!)</h3>
+                <p>Comece a aplicar essa palavra essencial em sua comunicação diária e observe como ela enriquece suas conversas! (Start applying this essential word in your daily communication and see how it enriches your conversations!)</p>
+                <button class="call-to-action-button" onclick="alert('Excelente! Sua comunicação em inglês está evoluindo!');">
+                    Começar a Usar Agora! (Start Using Now!)
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>Daby © 2025 ✨🚀</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Lógica para os acordeões (dropdowns)
+            const accordionHeaders = document.querySelectorAll('.accordion-header');
+
+            accordionHeaders.forEach(header => {
+                header.addEventListener('click', () => {
+                    const content = header.nextElementSibling; // Pega o conteúdo do acordeão
+                    const icon = header.querySelector('i'); // Pega o ícone
+
+                    // Fecha outros acordeões abertos (opcional, mas bom para UX)
+                    accordionHeaders.forEach(otherHeader => {
+                        if (otherHeader !== header && otherHeader.classList.contains('active')) {
+                            otherHeader.classList.remove('active');
+                            otherHeader.nextElementSibling.classList.remove('active');
+                            otherHeader.querySelector('i').style.transform = 'rotate(0deg)';
+                        }
+                    });
+
+                    // Alterna a classe 'active' no cabeçalho e no conteúdo
+                    header.classList.toggle('active');
+                    content.classList.toggle('active');
+
+                    // Gira o ícone de chevron
+                    if (header.classList.contains('active')) {
+                        icon.style.transform = 'rotate(180deg)';
+                    } else {
+                        icon.style.transform = 'rotate(0deg)';
+                    }
+                });
+            });
+
+            // Lógica para os botões de áudio (mantidos, mas não há áudio específico para estas palavras)
+            const audioButtons = document.querySelectorAll('.audio-button');
+            const synth = window.speechSynthesis;
+
+            audioButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const wordToSpeak = button.dataset.audioWord;
+                    if (wordToSpeak && synth) {
+                        const utterance = new SpeechSynthesisUtterance(wordToSpeak);
+                        utterance.lang = 'en-US'; // Define o idioma para inglês americano para pronúncia correta
+                        synth.speak(utterance);
+                    } else {
+                        console.error('Web Speech API not supported or word not defined.');
+                    }
+                });
+            });
+
+            // Lógica para alternar a introdução entre português e inglês
+            const introLangPtBtn = document.getElementById('intro-lang-pt-btn');
+            const introLangEnBtn = document.getElementById('intro-lang-en-btn');
+            const introPtContent = document.getElementById('intro-pt');
+            const introEnContent = document.getElementById('intro-en');
+
+            function showIntroLanguage(lang) {
+                if (lang === 'pt') {
+                    introPtContent.classList.remove('hidden');
+                    introEnContent.classList.add('hidden');
+                    introLangPtBtn.classList.add('active');
+                    introLangEnBtn.classList.remove('active');
+                } else if (lang === 'en') {
+                    introPtContent.classList.add('hidden');
+                    introEnContent.classList.remove('hidden');
+                    introLangPtBtn.classList.remove('active');
+                    introLangEnBtn.classList.add('active');
+                }
+            }
+
+            introLangPtBtn.addEventListener('click', () => showIntroLanguage('pt'));
+            introLangEnBtn.addEventListener('click', () => showIntroLanguage('en'));
+
+            // Lógica para os botões "Mostrar Resposta" na seção de prática de tradução
+            const showAnswerButtons = document.querySelectorAll('.translation-exercise .show-answer-btn');
+
+            showAnswerButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const parentExercise = button.closest('.translation-exercise');
+                    const correctAnswerDiv = parentExercise.querySelector('.correct-translation');
+                    
+                    if (correctAnswerDiv) {
+                        correctAnswerDiv.style.display = 'block'; // Mostra a div da resposta
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
